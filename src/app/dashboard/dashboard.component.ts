@@ -3,7 +3,7 @@ import { TableData } from '../md/md-table/md-table.component';
 
 import { InstagramService } from '../core/services';
 
-import { TopPost } from 'app/core/models';
+import { TopPost, TopHashTag } from 'app/core/models';
 
 import * as Chartist from 'chartist';
 
@@ -19,7 +19,8 @@ export class DashboardComponent implements OnInit, AfterViewInit{
 
   username: string;
   topPost: TopPost = new TopPost();
-
+  topHashTags: Array<TopHashTag> = [];
+  
   constructor (
      private instagramService: InstagramService
   ) {}
@@ -92,11 +93,18 @@ export class DashboardComponent implements OnInit, AfterViewInit{
         });
     }
 
+    getTopHashTags() {
+        this.instagramService.getTopHashTags().subscribe(res => {
+            this.topHashTags = res;
+            console.log(res);
+        });
+    }
   // constructor(private navbarTitleService: NavbarTitleService) { }
   public ngOnInit() {
         this.getInstaName();
         this.getTopPost();
-
+        this.getTopHashTags();
+        
       this.tableData = {
           headerRow: ['ID', 'Name', 'Salary', 'Country', 'City'],
           dataRows: [

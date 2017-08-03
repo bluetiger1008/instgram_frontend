@@ -31,9 +31,7 @@
                         <i class="material-icons">timeline</i>
                     </div>
                     <div class="card-content">
-                        <h4 class="card-title">Coloured Line Chart
-                            <small> - Rounded</small>
-                        </h4>
+                        <h4 class="card-title">Followers over time</h4>
                     </div>
                     <div id="colouredRoundedLineChart" class="ct-chart" id="followers_chart"></div>
                 </div>
@@ -41,36 +39,27 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-4 col-lg-offset-2">
-                <div class="card card-stats">
-                    <div class="card-header" data-background-color="orange">
-                        <i class="material-icons">weekend</i>
-                    </div>
-                    <div class="card-content">
-                        <p class="category">Top Post This Month</p>
-                        <h3 class="card-title">184</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons text-danger">warning</i>
-                            <a href="#pablo">Get More Space...</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-sm-12">
+                <p class="text-center">Top Hashtags</p>
             </div>
-            <div class="col-sm-4">
-                <div class="card card-stats">
-                    <div class="card-header" data-background-color="orange">
-                        <i class="material-icons">weekend</i>
-                    </div>
-                    <div class="card-content">
-                        <p class="category">Top Post This Month</p>
-                        <h3 class="card-title">184</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons text-danger">warning</i>
-                            <a href="#pablo">Get More Space...</a>
+            <div class="topHashTags_cards">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-4 col-sm-6" *ngFor="let tag of topHashTags">
+                    <div class="card card-stats">
+                        <div class="card-header card-header-icon" data-background-color="orange">
+                            <i class="material-icons">trending_up</i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">{{tag.hashtag}}</h3>
+                        </div>
+                        <div class="card-footer">
+                            <div class="col-sm-6">
+                                <p class="text-center">{{tag.avg_likes}} likes/post (avg)</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="text-center">{{tag.avg_eng_ratio}} eng.ratio</p>
+                            </div>
                         </div>
                     </div>
                 </div>

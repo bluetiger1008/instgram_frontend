@@ -17,4 +17,8 @@ export class InstagramService {
     getTopPost() {
         return this.http.get(this.base_url + 'metrics/summary/top_post').map(x => x.json());    
     }
+
+    getTopHashTags() {
+        return this.http.get(this.base_url + 'metrics/summary/hashtags').map(x => x.json());
+    }
 }
