@@ -2,21 +2,20 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <h2 class="text-center">@InstagramUsername</h2>
+                <h2 class="text-center">{{username}}</h2>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-lg-offset-4 col-sm-offset-3">
                 <div class="card card-stats">
                     <div class="card-header" data-background-color="orange">
-                        <i class="material-icons">weekend</i>
+                        <p>Top Post This Month</p>
                     </div>
                     <div class="card-content">
-                        <p class="category">Top Post This Month</p>
-                        <h3 class="card-title">184</h3>
+                        <img [src]="topPost.pic_link">
                     </div>
                     <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons text-danger">warning</i>
-                            <a href="#pablo">Get More Space...</a>
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
                         </div>
                     </div>
                 </div>
@@ -34,7 +33,7 @@
                             <small> - Rounded</small>
                         </h4>
                     </div>
-                    <div id="colouredRoundedLineChart" class="ct-chart"></div>
+                    <div id="colouredRoundedLineChart" class="ct-chart" id="followers_chart"></div>
                 </div>
             </div>
         </div>

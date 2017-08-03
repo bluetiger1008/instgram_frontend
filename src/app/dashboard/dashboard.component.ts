@@ -1,6 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { TableData } from '../md/md-table/md-table.component';
 
+import { InstagramService } from '../core/services';
+
+import { TopPost } from 'app/core/models';
+
 import * as Chartist from 'chartist';
 
 declare var $:any;
@@ -12,6 +16,14 @@ declare var $:any;
 export class DashboardComponent implements OnInit, AfterViewInit{
   // constructor(private navbarTitleService: NavbarTitleService, private notificationService: NotificationService) { }
   public tableData: TableData;
+
+  username: string;
+  topPost: TopPost = new TopPost();
+
+  constructor (
+     private instagramService: InstagramService
+  ) {}
+
   startAnimationForLineChart(chart){
       var seq, delays, durations;
       seq = 0;
@@ -67,8 +79,24 @@ export class DashboardComponent implements OnInit, AfterViewInit{
 
       seq2 = 0;
   }
+
+    getInstaName() {
+        this.instagramService.getInstaName().subscribe(res => {
+            this.username = res.username;
+        });
+    }
+
+    getTopPost() {
+        this.instagramService.getTopPost().subscribe((res: TopPost) => {
+            this.topPost = res;
+        });
+    }
+
   // constructor(private navbarTitleService: NavbarTitleService) { }
   public ngOnInit() {
+        this.getInstaName();
+        this.getTopPost();
+
       this.tableData = {
           headerRow: ['ID', 'Name', 'Salary', 'Country', 'City'],
           dataRows: [
@@ -98,7 +126,7 @@ export class DashboardComponent implements OnInit, AfterViewInit{
           chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
       }
 
-      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+      var dailySalesChart = new Chartist.Line('#followers_chart', dataDailySalesChart, optionsDailySalesChart);
 
       this.startAnimationForLineChart(dailySalesChart);
       /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
@@ -189,6 +217,7 @@ export class DashboardComponent implements OnInit, AfterViewInit{
                   }]
               },
           });
+        
    }
    ngAfterViewInit(){
        var breakCards = true;
