@@ -21,4 +21,8 @@ export class InstagramService {
     getTopHashTags() {
         return this.http.get(this.base_url + 'metrics/summary/hashtags').map(x => x.json());
     }
+
+    getFollowersTimeline() {
+        return this.http.get(this.base_url + 'metrics/summary/followers_timeline').map(x => x.json());
+    }
 }
