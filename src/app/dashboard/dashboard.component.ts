@@ -21,6 +21,8 @@ export class DashboardComponent implements OnInit, AfterViewInit{
     topPost: TopPost = new TopPost();
     topHashTags: Array<TopHashTag> = [];
     followersTimeline: Array<FollowersTimeline> = [];
+    timelineLabels: string[] = [];
+    timelineSeries: Number[] = [];
 
     constructor (
         private instagramService: InstagramService
@@ -83,7 +85,34 @@ export class DashboardComponent implements OnInit, AfterViewInit{
     getFollowersTimeline() {
         this.instagramService.getFollowersTimeline().subscribe(res => {
             this.followersTimeline = res;
-            console.log(this.followersTimeline);
+            var dateTempArry = [];
+
+            for( var i = 0; i< this.followersTimeline.length; i++) {
+                var IndexOfSpace = this.followersTimeline[i].timestamp.indexOf(" ");
+                var dateStr = this.followersTimeline[i].timestamp.slice(0, IndexOfSpace);
+                var date = new Date(dateStr);
+                dateTempArry.push(date);
+
+                this.timelineSeries.push(this.followersTimeline[i].num_followers);
+            }
+
+            var date_sort_asc = function (date1, date2) {
+                  // This is a comparison function that will result in dates being sorted in
+                  // ASCENDING order. As you can see, JavaScript's native comparison operators
+                  // can be used to compare dates. This was news to me.
+                  if (date1 > date2) return 1;
+                  if (date1 < date2) return -1;
+                  return 0;
+            };
+
+            dateTempArry.sort(date_sort_asc);
+
+            for (var i = 0; i < dateTempArry.length; i ++) {
+                var timelineLabel = dateTempArry[i].getFullYear() + '-' + dateTempArry[i].getMonth() + '-' + dateTempArry[i].getDay();
+                this.timelineLabels.push(timelineLabel);
+            }
+            this.drawChart();
+            console.log(this.timelineLabels);
         });
     }
 
@@ -93,28 +122,28 @@ export class DashboardComponent implements OnInit, AfterViewInit{
         this.getTopPost();
         this.getTopHashTags();
         this.getFollowersTimeline();
-      
-        /* ----------==========     Daily Sales Chart initialization    ==========---------- */
+    }
 
-        var dataDailySalesChart = {
-          labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-          series: [
-              [12, 17, 7, 17, 23, 18, 38]
-          ]
-        };
+    private drawChart(): void {
+        var followersTimeline = {
+              labels: this.timelineLabels,
+              series: [
+                  this.timelineSeries
+              ]
+            };
 
-        var optionsDailySalesChart = {
+        var optionsFollwersLineChart = {
           lineSmooth: Chartist.Interpolation.cardinal({
               tension: 0
           }),
           low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
           chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
         }
 
-        var dailySalesChart = new Chartist.Line('#followers_chart', dataDailySalesChart, optionsDailySalesChart);
+        var followersLineChart = new Chartist.Line('#followers_chart', followersTimeline, optionsFollwersLineChart);
 
-        this.startAnimationForLineChart(dailySalesChart);
+        this.startAnimationForLineChart(followersLineChart);
     }
 
     ngAfterViewInit(){
