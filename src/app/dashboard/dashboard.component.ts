@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit, AfterViewInit{
     topHashTags: Array<TopHashTag> = [];
     followersTimeline: Array<FollowersTimeline> = [];
     timelineLabels: string[] = [];
-    timelineSeries: Number[] = [];
+    timelineSeries: number[] = [];
 
     constructor (
         private instagramService: InstagramService
@@ -86,6 +86,7 @@ export class DashboardComponent implements OnInit, AfterViewInit{
         this.instagramService.getFollowersTimeline().subscribe(res => {
             this.followersTimeline = res;
             var dateTempArry = [];
+            var max_num_followers = 0;
 
             for( var i = 0; i< this.followersTimeline.length; i++) {
                 var IndexOfSpace = this.followersTimeline[i].timestamp.indexOf(" ");
@@ -95,6 +96,8 @@ export class DashboardComponent implements OnInit, AfterViewInit{
 
                 this.timelineSeries.push(this.followersTimeline[i].num_followers);
             }
+
+            max_num_followers = Math.max.apply(null, this.timelineSeries);
 
             var date_sort_asc = function (date1, date2) {
                   // This is a comparison function that will result in dates being sorted in
@@ -111,8 +114,7 @@ export class DashboardComponent implements OnInit, AfterViewInit{
                 var timelineLabel = dateTempArry[i].getFullYear() + '-' + dateTempArry[i].getMonth() + '-' + dateTempArry[i].getDay();
                 this.timelineLabels.push(timelineLabel);
             }
-            this.drawChart();
-            console.log(this.timelineLabels);
+            this.drawChart(max_num_followers);
         });
     }
 
@@ -124,7 +126,7 @@ export class DashboardComponent implements OnInit, AfterViewInit{
         this.getFollowersTimeline();
     }
 
-    private drawChart(): void {
+    private drawChart(max_num_followers): void {
         var followersTimeline = {
               labels: this.timelineLabels,
               series: [
@@ -137,7 +139,7 @@ export class DashboardComponent implements OnInit, AfterViewInit{
               tension: 0
           }),
           low: 0,
-          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+          high: (Math.floor(max_num_followers/200) + 1) * 200, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
           chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
         }
 
