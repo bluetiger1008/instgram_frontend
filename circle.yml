@@ -1,0 +1,22 @@
+machine:
+  node:
+    version: 8.1.4
+
+dependencies:
+  override:
+    - npm install
+    - npm install -g @angular/cli
+
+compile:
+  override:
+    - npm run build --aot false
+
+test:
+  override: 
+    - echo "get your tests passing"
+
+deployment:
+  staging:
+    branch: master
+    commands: 
+      - ./deploy_staging.sh
