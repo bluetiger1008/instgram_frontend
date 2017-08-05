@@ -8,7 +8,7 @@ export class InstagramService {
         private http: Http
     ) { }
 
-    private base_url = 'https://tpbgnv9crd.execute-api.us-east-1.amazonaws.com/api/';
+    private base_url = 'https://api.chrisburchhardt.com/api/';
 
     getInstaName() {
         return this.http.get(this.base_url + 'me').map(x => x.json());
