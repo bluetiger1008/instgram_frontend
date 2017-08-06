@@ -2,10 +2,9 @@ machine:
   node:
     version: 8.1.4
 
-dependencies:
-  override:
-    - npm install
-    - npm install -g @angular/cli
+#dependencies:
+#  override:
+#    - npm install
 
 compile:
   override:
@@ -19,4 +18,5 @@ deployment:
   staging:
     branch: master
     commands: 
-      - ./deploy_staging.sh
+      - aws s3 sync dist/* s3://instagram.chrisburchhardt.com --delete
+      - aws cloudfront create-invalidation --distribution-id $staging_cloudfront_distro --paths '/*'
